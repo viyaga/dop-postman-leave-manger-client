@@ -1,0 +1,48 @@
+@import '../../../../styles/responsive.scss';
+
+.leave-requests {
+
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+
+    .title-and-filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      h2 {
+        text-transform: capitalize;
+
+        @include md {
+          font-size: 16px;
+        }
+
+        @include lg {
+          font-size: 18px;
+        }
+      }
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .pdf-btn {
+      background-color: rgb(255, 0, 0);
+      color: rgb(255, 255, 255);
+      box-shadow: none;
+      padding: 10px 5px;
+      font-weight: 600;
+      
+      &:hover{
+        background-color: rgba(255, 0, 0, 0.8);
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+  }
+}

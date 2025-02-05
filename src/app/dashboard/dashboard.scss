@@ -1,0 +1,56 @@
+@import "../../styles/variables.scss";
+@import "../../styles//responsive.scss";
+
+.main {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(0deg, $main-bg, $soft-bg);
+    color: $main-color;
+    height: 100vh;
+    overflow: auto;
+
+    .container {
+        display: flex;
+
+        .menuContainer {
+            width: 250px;
+            padding: 25px 20px 5PX;
+            border-right: 2px solid $soft-bg;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: scroll;
+            background-color: $main-bg;
+            z-index: 999;
+            transition: all .2s ease;
+
+            @include lg {
+                width: 90px;
+            }
+
+            @include md {
+                width: 250px;
+                left: -250px;
+            }
+        }
+
+        .menu-active {
+            left: 0;
+        }
+
+        .contentContainer {
+            margin-left: 250px;
+            width: 100%;
+            overflow: auto;
+            
+            @include lg {
+                margin-left: 90px;
+            }
+
+            @include md {
+                margin-left: 0;
+            }
+
+        }
+    }
+}

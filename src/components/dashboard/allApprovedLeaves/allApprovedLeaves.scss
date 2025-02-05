@@ -1,0 +1,41 @@
+@import '../../../styles/responsive.scss';
+
+.approvedLeave {
+
+  .info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+
+    .title-and-filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .btn {
+        cursor: pointer;
+      }
+
+      h2 {
+        text-transform: capitalize;
+
+        @include md {
+          font-size: 16px;
+        }
+
+        @include lg {
+          font-size: 18px;
+        }
+      }
+    }
+
+    .leave-days {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0 20px;
+    }
+  }
+}

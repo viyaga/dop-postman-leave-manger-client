@@ -1,0 +1,28 @@
+@import '../../../styles/responsive.scss';
+
+.holidays {
+
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+
+    h2 {
+      text-transform: capitalize;
+
+      @include md {
+        font-size: 16px;
+      }
+
+      @include lg {
+        font-size: 18px;
+      }
+    }
+
+    button {
+      padding: 5px;
+      cursor: pointer;
+    }
+  }
+}
