@@ -68,7 +68,6 @@ const commonSlice = createSlice({
             const formatedData = formatLeaveData(data)
             state.allLeaves = formatedData
 
-            console.log({leave: action.payload});
             state.leaveData.push(action.payload)
             const formatedData1 = formatLeaveData(state.leaveData)
             state.leaveData = formatedData1

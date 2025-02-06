@@ -23,8 +23,6 @@ const RegularEmployee = ({ offices, regularEmployees }) => {
         setIsLoading(false)
     }, [dispatch, regularEmployees])
 
-    console.log({ regular });
-    
     return (
         <div className="regularEmployee">
             <div className="info">

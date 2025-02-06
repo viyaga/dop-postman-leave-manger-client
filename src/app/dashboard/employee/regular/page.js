@@ -33,9 +33,6 @@ const page = async () => {
 
   if (regularEmployees?.error) return <p>An Error Occured While Fetching Data</p>
 
-  console.log({offices, regularEmployees});
-  
-
   return (
     <RegularEmployee offices={offices} regularEmployees={regularEmployees} />
   )

@@ -33,7 +33,6 @@ const AdminRegister = () => {
         if (!isChecked) return toast.error("Please Accept Our Terms & Conditions")
 
         const register = await registerAdmin(name.toLowerCase(), email.toLowerCase(), password, subdivisionName.toLowerCase())
-        console.log({ register });
         if (register?.error) {
             toast.error(register.error)
         } else {

@@ -1,9 +1,10 @@
-import { deleteHolidayData } from '@/services'
 import './deleteHoliday.scss'
 import { deleteHoliday } from '@/redux/slices/commonSlice'
 import { useDispatch } from 'react-redux'
 import { useTransition } from 'react'
 import toast from 'react-hot-toast'
+import { delHoliday } from '@/lib/actions/holidays'
+import { errResponse } from '@/services'
 
 const DeleteHoliday = ({ deleteData, setDeleteData }) => {
     const [isLoading, startTransiton] = useTransition()
@@ -12,24 +13,21 @@ const DeleteHoliday = ({ deleteData, setDeleteData }) => {
     const handleDelete = () => {
 
         startTransiton(async () => {
-            const res = await deleteHolidayData(deleteData._id)
+            const res = await delHoliday(deleteData.documentId)
 
-            if (res.error) {
-                return toast.error(res.error)
+            if (res?.error) {
+                return toast.error(errResponse(res?.error))
             }
 
-            if (res.success) {
-                toast.success(res.success)
-                setDeleteData(null)
-                dispatch(deleteHoliday(deleteData))
-            }
+            toast.success("Deleted Successfully")
+            setDeleteData(null)
         })
     }
 
     return (
         <div className="deleteHoliday">
             <div className="modal">
-                <h1>Are you sure you want to delete {deleteData.name}&apos;s data? This action cannot be undone</h1>
+                <h1>Are you sure you want to delete {deleteData.holiday}&apos;s data? This action cannot be undone</h1>
                 <div className="buttons">
                     <button className={isLoading ? "deleteBtn disabled" : "deleteBtn"} onClick={handleDelete} disabled={isLoading}>{isLoading ? "Deleting..." : "Delete"}</button>
                     <button className={isLoading ? "cancelBtn disabled" : "cancelBtn"} onClick={() => setDeleteData(null)} disabled={isLoading}>Cancel</button>

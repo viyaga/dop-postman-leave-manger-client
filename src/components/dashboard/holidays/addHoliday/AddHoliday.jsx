@@ -6,10 +6,9 @@ import { z } from "zod"
 import './addHoliday.scss'
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { createHolidayData, updateHolidayData } from "@/services"
 import toast from "react-hot-toast"
-import { addHoliday, editHoliday } from "@/redux/slices/commonSlice"
 import moment from "moment"
+import { createHoliday, updateHoliday } from "@/lib/actions/holidays"
 
 const holidaySchema = z.object({
     holiday: z.string().min(1, { message: "Holiday Required" }).max(50),
@@ -18,7 +17,6 @@ const holidaySchema = z.object({
 
 const AddHoliday = ({ editData, setEditData, setOpen }) => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({ resolver: zodResolver(holidaySchema) })
-    const dispatch = useDispatch()
 
     const formInputs = [
         { type: "text", name: "holiday", placeholder: "Holiday Name", label: "Holiday" },
@@ -34,24 +32,21 @@ const AddHoliday = ({ editData, setEditData, setOpen }) => {
 
         let res = null
         if (editData) {
-            res = await updateHolidayData(editData._id, { holiday: holiday.toLowerCase(), date })
-            if (res.success) {
-                toast.success(res.success)
+            res = await updateHoliday(editData.documentId, { holiday: holiday.toLowerCase(), date })
+            if (!res.error) {
+                toast.success("Holiday Updated Successfully")
                 setOpen(false)
                 setEditData(null)
-                dispatch(editHoliday(res.holiday))
             }
         } else {
-            res = await createHolidayData({ holiday, date })
-            if (res.success) {
-                toast.success(res.success)
+            res = await createHoliday({ holiday, date })
+            if (!res.error) {
+                toast.success("Holiday Added Successfully")
                 setOpen(false)
-                dispatch(addHoliday(res.holiday))
             }
         }
 
         if (res.error) return toast.error(res.error)
-
     }
 
     useEffect(() => {

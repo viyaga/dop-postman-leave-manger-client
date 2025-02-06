@@ -89,7 +89,6 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
             return
         }
 
-        console.log({ employee });
         setValue('name', employee.name)
 
     }
@@ -165,7 +164,6 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
 
     useEffect(() => {
         if (editData) {
-            console.log({ editData });
             reset({
                 ...editData, status: editData.status === 1 ? 'approved' : 'pending',
                 from: moment(editData.from).format('YYYY-MM-DD'), to: moment(editData.to).format('YYYY-MM-DD'),

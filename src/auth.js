@@ -14,7 +14,7 @@ const login = async (credentials) => {
 
 	try {
 
-		const res = await axios.post(`${SERVER_ONE}/auth/local?populate=*`, { identifier: userName, password })
+		const res = await axios.post(`${SERVER_ONE}/auth/local`, { identifier: userName, password })
 		const userData = res?.data?.user
 		// if (!userData) return null
 
@@ -23,13 +23,10 @@ const login = async (credentials) => {
 		// if (!office?.name) return null
 
 		const user = { ...userData, office }
-		console.log({ user });
 
 		return user;
 
 	} catch (err) {
-		console.log({ err });
-
 		return null;
 	}
 };
