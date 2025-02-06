@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTransition } from 'react'
 import toast from 'react-hot-toast'
 import { deleteRegularEmployee } from '@/redux/slices/commonSlice'
+import { delRegularEmployee } from '@/lib/actions/officials'
 
 const DeleteRegularEmployee = ({ deleteData, setDeleteData }) => {
     const [isLoading, startTransiton] = useTransition()
@@ -12,17 +13,14 @@ const DeleteRegularEmployee = ({ deleteData, setDeleteData }) => {
     const handleDelete = () => {
 
         startTransiton(async () => {
-            const res = await deleteRegularEmployeeData(deleteData._id)
+            const res = await delRegularEmployee(deleteData.documentId)
 
-            if (res.error) {
+            if (res?.error) {
                 return toast.error(res.error)
             }
 
-            if (res.success) {
-                toast.success(res.success)
-                setDeleteData(null)
-                dispatch(deleteRegularEmployee(deleteData))
-            }
+            toast.success("Employee Deleted Successfully")
+            setDeleteData(null)
         })
     }
 

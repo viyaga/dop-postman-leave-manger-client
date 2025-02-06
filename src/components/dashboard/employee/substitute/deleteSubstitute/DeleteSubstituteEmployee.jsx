@@ -1,9 +1,9 @@
 import { deleteSubstituteEmployeeData } from '@/services'
 import './deleteSubstituteEmployee.scss'
-import { deleteSubstituteEmployee } from '@/redux/slices/commonSlice'
 import { useDispatch } from 'react-redux'
 import { useTransition } from 'react'
 import toast from 'react-hot-toast'
+import { delSubstitute } from '@/lib/actions/substitutes'
 
 const DeleteSubstituteEmployee = ({ deleteData, setDeleteData }) => {
     const [isLoading, startTransiton] = useTransition()
@@ -12,17 +12,14 @@ const DeleteSubstituteEmployee = ({ deleteData, setDeleteData }) => {
     const handleDelete = () => {
 
         startTransiton(async () => {
-            const res = await deleteSubstituteEmployeeData(deleteData._id)
+            const res = await delSubstitute(deleteData.documentId)
 
-            if (res.error) {
-                return toast.error(res.error)
+            if (res?.error) {
+                return toast.error("Failed to delete data")
             }
 
-            if (res.success) {
-                toast.success(res.success)
-                setDeleteData(null)
-                dispatch(deleteSubstituteEmployee(deleteData))
-            }
+            toast.success("Data deleted successfully")
+            setDeleteData(null)
         })
     }
 

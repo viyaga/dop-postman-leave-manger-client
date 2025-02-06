@@ -156,11 +156,8 @@ const getEmployeeName = async (officeId, designation) => {
 }
 
 const formatRegularEmployeeData = (regularEmployeeData) => {
-    const sortedData = regularEmployeeData.sort((a, b) => {
-        return a.officeName.localeCompare(b.officeName);
-    });
 
-    const idAddedData = addIdToDataGridRows(sortedData)
+    const idAddedData = addIdToDataGridRows(regularEmployeeData)
     return idAddedData
 }
 
