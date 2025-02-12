@@ -1,40 +1,61 @@
 "use server"
 
-import { revalidateTag } from "next/cache";
+import prisma from "../prisma";
 import { errResponse } from "../utils";
 
-const { getHolidaysQuery } = require("../queries");
-const { strapiFetch } = require("./common")
-
 export const getAllHolidays = async () => {
-    const res = await strapiFetch({ path: '/holidays', query: getHolidaysQuery, tags: ['holidays'], revalidateTime: 3600 * 24 * 365 });
+    console.log("Prisma Client:", prisma.holiday); // Debugging
+    try {
+        const holidays = await prisma.holiday.findMany();
+        return holidays;
+    } catch (error) {
+        return { error: errResponse(error) };
+    }
+}
 
-    if (res?.error) return { error: errResponse(res?.error) }
-
-    return res?.body?.data;
+export async function getHolidayById(id) {
+    try {
+        const holiday = await prisma.holiday.findUnique({ where: { id } });
+        return holiday;
+    } catch (error) {
+        return null;
+    }
 }
 
 export const createHoliday = async (data) => {
-    const res = await strapiFetch({ path: '/holidays', method: 'POST', body: { data } });
-    if (res?.error) return { error: errResponse(res?.error) }
-    revalidateTag('holidays');
-    return res?.body?.data;
+    const { holiday, date } = data;
+
+    try {
+        const { holiday, date } = data;
+        const newHoliday = await prisma.holiday.create({
+            data: { holiday, date: date ? new Date(date) : null },
+        });
+        return { success: true, holiday: newHoliday };
+    } catch (error) {
+        return { error: errResponse(error) };
+    }
 }
 
-export const updateHoliday = async (documentId, data) => {
-    console.log({ documentId, data });
+export const updateHoliday = async (id, data) => {
+    const { holiday, date } = data;
 
-    const res = await strapiFetch({ path: `/holidays/${documentId}`, method: 'PUT', body: { data } });
-    if (res?.error) return { error: errResponse(res?.error) }
-    revalidateTag('holidays');
-    return res?.body?.data;
+    try {
+        const updatedHoliday = await prisma.holiday.update({
+            where: { id },
+            data: { holiday, date: date ? new Date(date) : null },
+        });
+
+        return { success: true, updatedHoliday };
+    } catch (error) {
+        return { error: errResponse(error) };
+    }
 }
 
-export const delHoliday = async (documentId) => {
-    const res = await strapiFetch({ path: `/holidays/${documentId}`, method: 'DELETE' });
-
-    if (res?.error) return { error: errResponse(res?.error) }
-    revalidateTag('holidays');
-
-    return
+export const delHoliday = async (id) => {
+    try {
+        await prisma.holiday.delete({ where: { id } });
+        return { success: true };
+    } catch (error) {
+        return { success: false, message: "Error deleting holiday" };
+    }
 }

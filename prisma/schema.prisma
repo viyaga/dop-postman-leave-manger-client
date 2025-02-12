@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  officeName String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Holiday {
+  id        Int      @id @default(autoincrement())
+  holiday   String   @unique
+  date      DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Official {
+  id              Int      @id @default(autoincrement())
+  name            String
+  designation     String   // Removed @db.VarChar(50)
+  employee_id     String   // Removed @db.VarChar(20)
+  pay             Int      @default(0)
+  official_status Int      @default(1)
+  leave_balance   Json?    // Stored as JSON since it's a component
+  officeId        Int?
+  office          Office?  @relation(fields: [officeId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Office {
+  id        Int         @id @default(autoincrement())
+  name      String
+  officials Official[]
+}
+
+model Substitute {
+  id                  Int      @id @default(autoincrement())
+  name                String   // Removed @db.VarChar(50)
+  designation         String
+  branch_office       String?
+  sub_office          String?
+  head_office         String?
+  date_of_birth       DateTime?
+  date_of_appointment DateTime?
+  employee_id         String   @unique
+  substitute_status   Int      @default(1)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model ElStatement {
+  id                     Int      @id @default(autoincrement())
+  name                   String
+  designation            String?
+  pay                    Int      @default(0)
+  kind_of_leave          String   // Removed @db.VarChar(100)
+  substitute_name        String
+  substitute_designation String?
+  employee_id            String   @unique // Removed @db.VarChar(20)
+  substitute_emp_id      String?
+  substitute_office      String?
+  dob                    DateTime?
+  doa                    DateTime?
+  no_of_days_claim       Int      @default(0)
+  remarks                String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model ClStatement {
+  id                      Int      @id @default(autoincrement())
+  name                    String?
+  designation             String
+  kind_of_leave           String?  // Removed @db.VarChar(100)
+  substitute_name         String
+  substitute_designation  String
+  substitute_office       String?
+  dob                     DateTime?
+  community               String
+  remarks                 String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+}

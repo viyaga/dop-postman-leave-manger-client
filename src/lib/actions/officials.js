@@ -1,52 +1,70 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
+import prisma from "@/lib/prisma";
 import { errResponse } from "../utils";
 
-const { getRegularEmployeesQuery } = require("../queries");
-const { strapiFetch } = require("./common");
-
-export const getAllRegularEmployees = async () => {
-    const res = await strapiFetch({ path: '/officials', query: getRegularEmployeesQuery, tags: ['regularEmployees'], revalidateTime: 3600 * 24 * 365 });
-    
-    if (res?.error) return { error: errResponse(res?.error) };
-    
-    return res?.body?.data;
+// ➤ **Get All Officials**
+export const getAllOfficials = async () => {
+  try {
+    const officials = await prisma.official.findMany({
+      include: { office: true },
+    });
+    return officials;
+  } catch (error) {
+    return { error: errResponse(error) };
+  }
 };
 
-export const createRegularEmployee = async (data) => {
-    const res = await strapiFetch({ path: '/officials', method: 'POST', body: { data } });
-    
-    if (res?.error) return { error: errResponse(res?.error) };
-    
-    revalidateTag('regularEmployees');
-    return res?.body?.data;
+// ➤ **Get Official by ID**
+export const getOfficialById = async (id) => {
+  try {
+    const official = await prisma.official.findUnique({
+      where: { id },
+      include: { office: true },
+    });
+    return official;
+  } catch (error) {
+    return { error: errResponse(error) };
+  }
 };
 
-export const updateRegularEmployee = async (documentId, data) => {
-    console.log({ documentId, data });
-    
-    const res = await strapiFetch({ path: `/officials/${documentId}`, method: 'PUT', body: { data } });
-    
-    if (res?.error) return { error: errResponse(res?.error) };
-    
-    revalidateTag('regularEmployees');
-    return res?.body?.data;
+// ➤ **Create Official**
+export const createOfficial = async (data) => {
+  try {
+    const newOfficial = await prisma.official.create({
+      data,
+    });
+
+    revalidateTag("regularEmployees");
+    return newOfficial;
+  } catch (error) {
+    return { error: errResponse(error) };
+  }
 };
 
-export const delRegularEmployee = async (documentId) => {
-    const res = await strapiFetch({ path: `/officials/${documentId}`, method: 'DELETE' });
-    
-    if (res?.error) return { error: errResponse(res?.error) };
-    
-    revalidateTag('regularEmployees');
-    return;
+// ➤ **Update Official**
+export const updateOfficial = async (id, data) => {
+  try {
+    const updatedOfficial = await prisma.official.update({
+      where: { id },
+      data,
+    });
+
+    revalidateTag("regularEmployees");
+    return updatedOfficial;
+  } catch (error) {
+    return { error: errResponse(error) };
+  }
 };
 
-export const getRegularEmployeeById = async (documentId) => {
-    const res = await strapiFetch({ path: `/officials/${documentId}` });
-    
-    if (res?.error) return { error: errResponse(res?.error) };
-    
-    return res?.body?.data;
+// ➤ **Delete Official**
+export const deleteOfficial = async (id) => {
+  try {
+    await prisma.official.delete({ where: { id } });
+    revalidateTag("regularEmployees");
+    return { success: true };
+  } catch (error) {
+    return { error: errResponse(error) };
+  }
 };

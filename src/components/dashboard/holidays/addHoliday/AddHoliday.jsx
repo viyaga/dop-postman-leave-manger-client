@@ -32,7 +32,7 @@ const AddHoliday = ({ editData, setEditData, setOpen }) => {
 
         let res = null
         if (editData) {
-            res = await updateHoliday(editData.documentId, { holiday: holiday.toLowerCase(), date })
+            res = await updateHoliday(editData.id, { holiday: holiday.toLowerCase(), date })
             if (!res.error) {
                 toast.success("Holiday Updated Successfully")
                 setOpen(false)

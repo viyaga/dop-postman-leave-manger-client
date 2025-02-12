@@ -1,30 +1,26 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authConfig } from "@/auth.config";
-import { connectDB } from "@/lib/actions/admin";
-import { Admin, Employee } from "@/lib/models";
 import bcrypt from "bcrypt";
 import { z } from "zod";
-import axios from "axios";
+import prisma from "./lib/prisma";
 
 const login = async (credentials) => {
-	const { userName, password, subdivisionName } = credentials
-	const SERVER_ONE = process.env.SERVER_ONE
-	const API_TOKEN = process.env.API_TOKEN
+	const { email, password, subdivisionName } = credentials
 
 	try {
+		const user = await prisma.user.findUnique({ where: { email } });
 
-		const res = await axios.post(`${SERVER_ONE}/auth/local`, { identifier: userName, password })
-		const userData = res?.data?.user
-		// if (!userData) return null
+		if (!user) {
+			return null;
+		}
 
-		const userOfficeData = await axios.get(`${SERVER_ONE}/users/${userData?.id}?fields=id&populate=office`, { headers: { Authorization: API_TOKEN } })
-		const office = userOfficeData?.data?.office
-		// if (!office?.name) return null
+		const passwordMatch = await bcrypt.compare(password, user.password);
+		if (!passwordMatch) {
+			return null;
+		}
 
-		const user = { ...userData, office }
-
-		return user;
+		return user
 
 	} catch (err) {
 		return null;
@@ -42,13 +38,13 @@ export const { signIn, signOut, auth } = NextAuth({
 				// if admin
 				if (credentials.subdivisionName) {
 					parsedCredentials = z.object({
-						userName: z.string().email().min(4).max(75),
+						email: z.string().email().min(4).max(75),
 						password: z.string().min(6).max(20),
 						subdivisionName: z.string().min(1).max(75)
 					}).safeParse(credentials);
 				} else {
 					parsedCredentials = z.object({
-						userName: z.string().min(4).max(20),
+						email: z.string().min(4).max(20),
 						password: z.string().min(6).max(20),
 					}).safeParse(credentials);
 				}
@@ -72,7 +68,7 @@ export const { signIn, signOut, auth } = NextAuth({
 			if (user) {
 				token.id = user.documentId;
 				token.name = user.name;
-				token.office = user.office
+				token.office = user.officeName;
 			}
 			return token;
 		},

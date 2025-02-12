@@ -13,7 +13,7 @@ const DeleteHoliday = ({ deleteData, setDeleteData }) => {
     const handleDelete = () => {
 
         startTransiton(async () => {
-            const res = await delHoliday(deleteData.documentId)
+            const res = await delHoliday(deleteData.id)
 
             if (res?.error) {
                 return toast.error(errResponse(res?.error))
