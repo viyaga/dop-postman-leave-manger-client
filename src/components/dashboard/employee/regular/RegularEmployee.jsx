@@ -10,7 +10,7 @@ import AddRegularEmployee from "./addRegularEmployee/AddRegularEmployee";
 import DeleteRegularEmployee from "./deleteRegularEmployee/DeleteRegularEmployee";
 import DashboardLoading from "@/components/shared/dashboardLoading/DashboardLoading";
 
-const RegularEmployee = ({ offices, regularEmployees }) => {
+const RegularEmployee = ({ office, regularEmployees }) => {
     const { regular } = useSelector(state => state.common.employee)
     const [deleteData, setDeleteData] = useState(null)
     const [editData, setEditData] = useState(null)
@@ -35,7 +35,7 @@ const RegularEmployee = ({ offices, regularEmployees }) => {
                     ? < DataTableWithActions columns={regularEmployeeColumns} rows={regular} setOpen={setOpen} setEditData={setEditData} setDeleteData={setDeleteData} />
                     : <p>No Data Found</p>
             }
-            {open && <AddRegularEmployee offices={offices} editData={editData} setEditData={setEditData} setOpen={setOpen} />}
+            {open && <AddRegularEmployee office={office} editData={editData} setEditData={setEditData} setOpen={setOpen} />}
             {deleteData && <DeleteRegularEmployee deleteData={deleteData} setDeleteData={setDeleteData} />}
         </div>
     )

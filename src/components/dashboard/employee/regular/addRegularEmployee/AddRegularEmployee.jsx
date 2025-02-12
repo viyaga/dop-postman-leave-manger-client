@@ -20,7 +20,6 @@ const regularEmployeeSchema = z.object({
     employee_id: z.string().min(1, { message: "Employee ID Required" }).max(20),
     name: z.string().min(1, { message: "Name Required" }).max(50),
     designation: z.string().min(1, { message: "Designation Required" }).max(20),
-    office: z.string().min(1, { message: "Office Required" }),
     pay: z.number().min(0, { message: "Pay must be non-negative" }),
     leave_balance: z.object({
         cl: z.number().min(0),
@@ -29,7 +28,7 @@ const regularEmployeeSchema = z.object({
     })
 })
 
-const AddRegularEmployee = ({ offices, editData, setEditData, setOpen }) => {
+const AddRegularEmployee = ({ office, editData, setEditData, setOpen }) => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({ resolver: zodResolver(regularEmployeeSchema) })
 
     const handleClose = () => {
@@ -48,7 +47,7 @@ const AddRegularEmployee = ({ offices, editData, setEditData, setOpen }) => {
             },
             name: data.name.trim().toLowerCase(),
             designation: data.designation.trim().toLowerCase(),
-            office: data.office.trim(),
+            office:office.id,
         };
 
         let res = null;
@@ -60,7 +59,7 @@ const AddRegularEmployee = ({ offices, editData, setEditData, setOpen }) => {
             if (!res.error) {
                 toast.success("Employee Updated Successfully");
                 setOpen(false);
-               return setEditData(null);
+                return setEditData(null);
             }
         } else {
             res = await createRegularEmployee(employeeData);
@@ -76,7 +75,14 @@ const AddRegularEmployee = ({ offices, editData, setEditData, setOpen }) => {
 
     useEffect(() => {
         if (editData) {
-            reset({ ...editData })
+            reset({
+                ...editData,
+                leave_balance: {
+                    cl: editData.leave_balance?.cl || 0,
+                    rh: editData.leave_balance?.rh || 0,
+                    el: editData.leave_balance?.el || 0,
+                }
+            })
         }
     }, [editData])
 
@@ -93,18 +99,6 @@ const AddRegularEmployee = ({ offices, editData, setEditData, setOpen }) => {
                         <label>Employee ID *</label>
                         <ZodFormInput type="text" name="employee_id" register={register} placeholder="Employee ID" error={errors["employee_id"]} />
                     </div>
-
-                    <div className="item">
-                        <label>Office *</label>
-                        <select {...register("office")}>
-                            <option value="">Select</option>
-                            {offices.map((item) => (
-                                <option key={item.id} value={item.documentId}>{item.name}</option>
-                            ))}
-                        </select>
-                        {errors.office && <p style={{ paddingTop: '5px', fontWeight: 600, color: 'orange' }}>{errors.office.message}</p>}
-                    </div>
-
                     <div className="item">
                         <label>Designation *</label>
                         <ZodSelectInput name="designation" register={register} defaultValue="Select" options={designationOptions} error={errors['designation']} />

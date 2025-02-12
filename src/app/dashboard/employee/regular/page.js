@@ -1,3 +1,4 @@
+import { auth } from '@/auth'
 import RegularEmployee from '@/components/dashboard/employee/regular/RegularEmployee'
 import { strapiFetch } from '@/lib/actions/common'
 import { getAllOfficials, getAllRegularEmployees } from '@/lib/actions/officials'
@@ -24,9 +25,10 @@ const transformData = (employees) => {
 };
 
 const page = async () => {
-  const offices = await fetchAllOffices()
+  const au = await auth()
+  const office = au?.user?.office
   
-  if (offices?.error) return <p>An Error Occured While Fetching Data</p>
+  if (!office?.id) return <p>An Error Occured While Fetching Data</p>
 
   let regularEmployees = await getAllRegularEmployees()
   regularEmployees = transformData(regularEmployees)
@@ -34,7 +36,7 @@ const page = async () => {
   if (regularEmployees?.error) return <p>An Error Occured While Fetching Data</p>
 
   return (
-    <RegularEmployee offices={offices} regularEmployees={regularEmployees} />
+    <RegularEmployee office={office} regularEmployees={regularEmployees} />
   )
 }
 
