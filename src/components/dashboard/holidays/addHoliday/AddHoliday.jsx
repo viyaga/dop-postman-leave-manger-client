@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux"
 import toast from "react-hot-toast"
 import moment from "moment"
 import { createHoliday, updateHoliday } from "@/lib/actions/holidays"
+import { addHoliday, editHoliday } from "@/redux/slices/commonSlice"
 
 const holidaySchema = z.object({
     holiday: z.string().min(1, { message: "Holiday Required" }).max(50),
@@ -17,6 +18,7 @@ const holidaySchema = z.object({
 
 const AddHoliday = ({ editData, setEditData, setOpen }) => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({ resolver: zodResolver(holidaySchema) })
+    const dispatch = useDispatch()
 
     const formInputs = [
         { type: "text", name: "holiday", placeholder: "Holiday Name", label: "Holiday" },
@@ -32,17 +34,19 @@ const AddHoliday = ({ editData, setEditData, setOpen }) => {
 
         let res = null
         if (editData) {
-            res = await updateHoliday(editData.id, { holiday: holiday.toLowerCase(), date })
+            res = await updateHoliday(editData.id, { holiday: holiday.toLowerCase(), date:new Date(date) })
             if (!res.error) {
                 toast.success("Holiday Updated Successfully")
                 setOpen(false)
                 setEditData(null)
+                return dispatch(editHoliday(res.updatedHoliday))
             }
         } else {
-            res = await createHoliday({ holiday, date })
+            res = await createHoliday({ holiday, date: new Date(date) })
             if (!res.error) {
                 toast.success("Holiday Added Successfully")
                 setOpen(false)
+                return dispatch(addHoliday(res.holiday))
             }
         }
 

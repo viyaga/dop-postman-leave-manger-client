@@ -97,7 +97,7 @@ const Filter = ({ setIsFilterOpen, setIsLoading, substitutes, employees }) => {
                             <select {...register("officeId")}>
                                 <option value="">Any</option>
                                 {offices && offices.map((item, index) =>
-                                    <option key={index} value={item._id}>{item.officeName}</option>
+                                    <option key={index} value={item.id}>{item.officeName}</option>
                                 )}
                             </select>
                             {errors.officeId && (
@@ -111,7 +111,7 @@ const Filter = ({ setIsFilterOpen, setIsLoading, substitutes, employees }) => {
                             <select {...register("employeeId")}>
                                 <option value="">Any</option>
                                 {employees && employees.sort((a, b) => a.name.localeCompare(b.name)).map((item, index) =>
-                                    <option key={index} value={item._id}>{item.name}</option>
+                                    <option key={index} value={item.id}>{item.name}</option>
                                 )}
                             </select>
                             {errors.employeeId && (
@@ -125,7 +125,7 @@ const Filter = ({ setIsFilterOpen, setIsLoading, substitutes, employees }) => {
                             <select {...register("substituteId")}>
                                 <option value="">Any</option>
                                 {substitutes && substitutes.map((item, index) =>
-                                    <option key={index} value={item._id}>{item.name}</option>
+                                    <option key={index} value={item.id}>{item.name}</option>
                                 )}
                             </select>
                             {errors.substituteId && (

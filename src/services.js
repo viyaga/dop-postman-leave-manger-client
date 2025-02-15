@@ -18,8 +18,8 @@ const textCapitalize = (text) => {
     return sentence
 }
 
-const addIdToDataGridRows = (data) => {
-    return data.map((item, index) => ({ ...item, id: index + 1 }))
+const addSnoToDataGridRows = (data) => {
+    return data.map((item, index) => ({ ...item, sNo: index + 1 }))
 }
 
 const findNumberOfDays = (fromDate, toDate) => {
@@ -157,7 +157,7 @@ const getEmployeeName = async (officeId, designation) => {
 
 const formatRegularEmployeeData = (regularEmployeeData) => {
 
-    const idAddedData = addIdToDataGridRows(regularEmployeeData)
+    const idAddedData = addSnoToDataGridRows(regularEmployeeData)
     return idAddedData
 }
 
@@ -221,7 +221,7 @@ const formatSubstituteEmployeeData = (substituteEmployeeData) => {
         return a.name.localeCompare(b.name);
     });
 
-    const idAddedData = addIdToDataGridRows(sortedData)
+    const idAddedData = addSnoToDataGridRows(sortedData)
     return idAddedData
 }
 
@@ -275,7 +275,7 @@ const formatHolidayData = (HolidayData) => {
         return new Date(a.date) - new Date(b.date)
     });
 
-    const idAddedData = addIdToDataGridRows(sortedData)
+    const idAddedData = addSnoToDataGridRows(sortedData)
     return idAddedData
 }
 
@@ -350,7 +350,7 @@ const formatLeaveData = (leaveData) => {
         return new Date(a.from) - new Date(b.from)
     });
 
-    const idAddedData = addIdToDataGridRows(sortedData)
+    const idAddedData = addSnoToDataGridRows(sortedData)
     return idAddedData
 }
 
@@ -369,7 +369,7 @@ const getAllOffices = async () => {
 
 
 export {
-    errResponse, textCapitalize, addIdToDataGridRows, findNumberOfDays, getMonthAndYear, dateToIsoString, isHoliday, removeInitialFromName, isNameEditable, isObjectSame,
+    errResponse, textCapitalize, addSnoToDataGridRows, findNumberOfDays, getMonthAndYear, dateToIsoString, isHoliday, removeInitialFromName, isNameEditable, isObjectSame,
     getAllRegularEmployeesData, createRegularEmployeeData, updateRegularEmployeeData, deleteRegularEmployeeData, getEmployeeName, formatRegularEmployeeData,
     getAllSubstituteEmployeesData, getNonWorkingSubstitute, createSubstituteEmployeeData, updateSubstituteEmployeeData, deleteSubstituteEmployeeData, formatSubstituteEmployeeData,
     getAllHolidayData, createHolidayData, updateHolidayData, deleteHolidayData, formatHolidayData,

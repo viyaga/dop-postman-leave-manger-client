@@ -11,7 +11,7 @@ const headers = {
 
 export async function strapiFetch({ path, query, method = 'GET', body, tags, revalidateTime = 18000 }) {
     try {
-        const url = `${endpoint}${path}${query ? `?${qs.stringify(query, { encodeValuesOnly: true })}` : ''}`; console.log({ url, query });
+        const url = `${endpoint}${path}${query ? `?${qs.stringify(query, { encodeValuesOnly: true })}` : ''}`;
         const result = await fetch(url, {
             method,
             headers,
@@ -44,7 +44,6 @@ export async function strapiFetch({ path, query, method = 'GET', body, tags, rev
             body: responseBody
         };
     } catch (e) {
-        console.error({ e });
         return { error: e?.error };
     }
 }

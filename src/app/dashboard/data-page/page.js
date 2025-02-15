@@ -1,5 +1,5 @@
 import DataPage from "@/components/dashboard/shared/dataPage/DataPage"
-import { addIdToDataGridRows, dateToIsoString, errResponse } from "@/services"
+import { addSnoToDataGridRows, dateToIsoString, errResponse } from "@/services"
 
 const fetchData = async () => {
   const API_URL = process.env.SERVER_ONE + '/employee/substitute/substitutes-employees'

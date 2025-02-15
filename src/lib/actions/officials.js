@@ -7,9 +7,7 @@ import { errResponse } from "../utils";
 // ➤ **Get All Officials**
 export const getAllOfficials = async () => {
   try {
-    const officials = await prisma.official.findMany({
-      include: { office: true },
-    });
+    const officials = await prisma.official.findMany();
     return officials;
   } catch (error) {
     return { error: errResponse(error) };
@@ -21,7 +19,6 @@ export const getOfficialById = async (id) => {
   try {
     const official = await prisma.official.findUnique({
       where: { id },
-      include: { office: true },
     });
     return official;
   } catch (error) {
@@ -36,9 +33,10 @@ export const createOfficial = async (data) => {
       data,
     });
 
-    revalidateTag("regularEmployees");
     return newOfficial;
   } catch (error) {
+    console.log({ error });
+    
     return { error: errResponse(error) };
   }
 };
@@ -51,7 +49,6 @@ export const updateOfficial = async (id, data) => {
       data,
     });
 
-    revalidateTag("regularEmployees");
     return updatedOfficial;
   } catch (error) {
     return { error: errResponse(error) };
@@ -62,7 +59,6 @@ export const updateOfficial = async (id, data) => {
 export const deleteOfficial = async (id) => {
   try {
     await prisma.official.delete({ where: { id } });
-    revalidateTag("regularEmployees");
     return { success: true };
   } catch (error) {
     return { error: errResponse(error) };

@@ -32,17 +32,13 @@ model Official {
   employee_id     String   // Removed @db.VarChar(20)
   pay             Int      @default(0)
   official_status Int      @default(1)
-  leave_balance   Json?    // Stored as JSON since it's a component
+  cl              Int      @default(0)
+  el              Int      @default(0)
+  rh              Int      @default(0)
   officeId        Int?
-  office          Office?  @relation(fields: [officeId], references: [id])
+  office          String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-}
-
-model Office {
-  id        Int         @id @default(autoincrement())
-  name      String
-  officials Official[]
 }
 
 model Substitute {

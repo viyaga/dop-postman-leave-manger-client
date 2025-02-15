@@ -98,7 +98,7 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
             setValue('accountNo', "NA")
             return
         }
-        const accountNo = substitutes.filter((item) => item._id === e.target.value)[0]?.accountNo
+        const accountNo = substitutes.filter((item) => item.id === e.target.value)[0]?.accountNo
         setValue('accountNo', accountNo)
     }
 
@@ -123,17 +123,17 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
 
 
         const leaveData = {
-            employeeId: employees.find((data) => ((data.designation === props.designation) && (data.officeId === props.officeName)))?._id,
+            employeeId: employees.find((data) => ((data.designation === props.designation) && (data.officeId === props.officeName)))?.id,
             name: props.name.toLowerCase(),
             designation: props.designation.toLowerCase(),
             officeId: props.officeName,
-            officeName: offices.find((office) => office._id === props.officeName)?.officeName,
+            officeName: offices.find((office) => office.id === props.officeName)?.officeName,
             leaveMonth: getMonthAndYear(fromDate),
             from: fromDate,
             to: toDate,
             days: days,
             substituteId: props.substituteName,
-            substituteName: substitutes.find((item) => item._id === props.substituteName)?.name,
+            substituteName: substitutes.find((item) => item.id === props.substituteName)?.name,
             accountNo: props.accountNo,
             remarks: props.remarks,
             leaveType: props.leaveType,
@@ -142,7 +142,7 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
 
         let res = null
         if (editData) {
-            res = await updatePendingLeaveData(editData._id, leaveData)
+            res = await updatePendingLeaveData(editData.id, leaveData)
             if (res.success) {
                 toast.success(res.success)
                 setOpen(false)
@@ -192,7 +192,7 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
                             <select {...register("officeName")} onChange={fetchEmployeeName1}>
                                 <option value="">Select</option>
                                 {offices && offices.map((item, index) =>
-                                    <option key={index} value={item._id}>{item.officeName}</option>
+                                    <option key={index} value={item.id}>{item.officeName}</option>
                                 )}
                             </select>
                             {errors.officeName && (
@@ -227,7 +227,7 @@ const AddLeaveData = ({ substitutes, employees, holidays, editData, setEditData,
                             <select {...register("substituteName")} onChange={getEmployeeAccount}>
                                 <option value="">Select</option>
                                 {substitutes && substitutes.map((item, index) =>
-                                    <option key={index} value={item._id}>{item.name}</option>
+                                    <option key={index} value={item.id}>{item.name}</option>
                                 )}
                             </select>
                             {errors.substituteName && (

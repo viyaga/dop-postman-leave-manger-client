@@ -4,7 +4,6 @@ import prisma from "../prisma";
 import { errResponse } from "../utils";
 
 export const getAllHolidays = async () => {
-    console.log("Prisma Client:", prisma.holiday); // Debugging
     try {
         const holidays = await prisma.holiday.findMany();
         return holidays;
@@ -18,17 +17,15 @@ export async function getHolidayById(id) {
         const holiday = await prisma.holiday.findUnique({ where: { id } });
         return holiday;
     } catch (error) {
-        return null;
+        return { error: errResponse(error) };
     }
 }
 
 export const createHoliday = async (data) => {
-    const { holiday, date } = data;
 
     try {
-        const { holiday, date } = data;
         const newHoliday = await prisma.holiday.create({
-            data: { holiday, date: date ? new Date(date) : null },
+            data
         });
         return { success: true, holiday: newHoliday };
     } catch (error) {
@@ -37,25 +34,29 @@ export const createHoliday = async (data) => {
 }
 
 export const updateHoliday = async (id, data) => {
-    const { holiday, date } = data;
 
     try {
         const updatedHoliday = await prisma.holiday.update({
             where: { id },
-            data: { holiday, date: date ? new Date(date) : null },
+            data,
         });
+        console.log({ updatedHoliday });
+
 
         return { success: true, updatedHoliday };
     } catch (error) {
+        console.error({ error });
+
         return { error: errResponse(error) };
     }
 }
 
 export const delHoliday = async (id) => {
+
     try {
         await prisma.holiday.delete({ where: { id } });
         return { success: true };
     } catch (error) {
-        return { success: false, message: "Error deleting holiday" };
+        return { error: errResponse(error) };
     }
 }

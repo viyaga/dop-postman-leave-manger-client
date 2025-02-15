@@ -42,18 +42,18 @@ const commonSlice = createSlice({
         },
         editLeave: (state, action) => {
             if (action.payload?.status === 0) {
-                const data = state.leaveData.filter((item) => item._id !== action.payload._id)
+                const data = state.leaveData.filter((item) => item.id !== action.payload.id)
                 data.push(action.payload)
                 const formatedData = formatLeaveData(data)
                 state.leaveData = formatedData
             } else {
-                const data = state.leaveData.filter((item) => item._id !== action.payload._id)
+                const data = state.leaveData.filter((item) => item.id !== action.payload.id)
                 const formatedData = formatLeaveData(data)
                 state.leaveData = formatedData
             }
         },
         deleteLeave: (state, action) => {
-            const data = state.leaveData.filter((item) => item._id !== action.payload._id)
+            const data = state.leaveData.filter((item) => item.id !== action.payload.id)
             const formatedData = formatLeaveData(data)
             state.leaveData = formatedData
         },
@@ -64,7 +64,7 @@ const commonSlice = createSlice({
             state.allLeaves = formatedData
         },
         cancelLeave: (state, action) => {
-            const data = state.allLeaves.filter((item) => item._id !== action.payload._id)
+            const data = state.allLeaves.filter((item) => item.id !== action.payload.id)
             const formatedData = formatLeaveData(data)
             state.allLeaves = formatedData
 
@@ -84,13 +84,13 @@ const commonSlice = createSlice({
             state.employee.regular = formatedData
         },
         editRegularEmployee: (state, action) => {
-            const data = state.employee.regular.filter((item) => item._id !== action.payload._id)
+            const data = state.employee.regular.filter((item) => item.id !== action.payload.id)
             data.push(action.payload)
             const formatedData = formatRegularEmployeeData(data)
             state.employee.regular = formatedData
         },
         deleteRegularEmployee: (state, action) => {
-            const data = state.employee.regular.filter((item) => item._id !== action.payload._id)
+            const data = state.employee.regular.filter((item) => item.id !== action.payload.id)
             const formatedData = formatRegularEmployeeData(data)
             state.employee.regular = formatedData
         },
@@ -106,13 +106,13 @@ const commonSlice = createSlice({
             state.employee.substitute = formatedData
         },
         editSubstituteEmployee: (state, action) => {
-            const data = state.employee.substitute.filter((item) => item._id !== action.payload._id)
+            const data = state.employee.substitute.filter((item) => item.id !== action.payload.id)
             data.push(action.payload)
             const formatedData = formatSubstituteEmployeeData(data)
             state.employee.substitute = formatedData
         },
         deleteSubstituteEmployee: (state, action) => {
-            const data = state.employee.substitute.filter((item) => item._id !== action.payload._id)
+            const data = state.employee.substitute.filter((item) => item.id !== action.payload.id)
             const formatedData = formatSubstituteEmployeeData(data)
             state.employee.substitute = formatedData
         },
@@ -128,13 +128,13 @@ const commonSlice = createSlice({
             state.holidays = formatedData
         },
         editHoliday: (state, action) => {
-            const data = state.holidays.filter((item) => item._id !== action.payload._id)
+            const data = state.holidays.filter((item) => item.id !== action.payload.id)
             data.push(action.payload)
             const formatedData = formatHolidayData(data)
             state.holidays = formatedData
         },
         deleteHoliday: (state, action) => {
-            const data = state.holidays.filter((item) => item._id !== action.payload._id)
+            const data = state.holidays.filter((item) => item.id !== action.payload.id)
             const formatedData = formatHolidayData(data)
             state.holidays = formatedData
         },

@@ -9,6 +9,7 @@ import { createSubstituteEmployeeData, isNameEditable, isObjectSame, updateSubst
 import toast from "react-hot-toast";
 import { addSubstituteEmployee, editSubstituteEmployee } from "@/redux/slices/commonSlice";
 import { createSubstitute, updateSubstitute } from "@/lib/actions/substitutes";
+import moment from "moment";
 
 const substituteSchema = z.object({
     name: z.string().min(1, { message: "Name Required" }).max(50),
@@ -24,6 +25,8 @@ const substituteSchema = z.object({
 const AddSubstituteEmployee = ({ editData, setEditData, setOpen }) => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({ resolver: zodResolver(substituteSchema) });
     const dispatch = useDispatch();
+    console.log("editData", editData);
+
 
     const formInputs = [
         { type: "text", name: "name", placeholder: "Name", label: "Name" },
@@ -45,6 +48,8 @@ const AddSubstituteEmployee = ({ editData, setEditData, setOpen }) => {
         const substituteData = {
             ...data,
             name: data.name.trim().toLowerCase(),
+            date_of_birth: data.date_of_birth ? new Date(data.date_of_birth) : null,
+            date_of_appointment: data.date_of_appointment ? new Date(data.date_of_appointment) : null,
         };
 
         let res = null;
@@ -65,17 +70,19 @@ const AddSubstituteEmployee = ({ editData, setEditData, setOpen }) => {
             const isEditable = isNameEditable(editData.name, substituteData.name);
             if (!isEditable) return toast.error("Names are too different and not editable. Please consult your database manager.", { duration: 10000 });
 
-            res = await updateSubstitute(editData.documentId, substituteData);
+            res = await updateSubstitute(editData.id, substituteData);
             if (!res.error) {
                 toast.success("Substitute Employee Updated Successfully");
                 setOpen(false);
                 setEditData(null);
+                dispatch(editSubstituteEmployee(res))
             }
         } else {
             res = await createSubstitute(substituteData);
             if (!res.error) {
                 toast.success("Substitute Employee Added Successfully");
                 setOpen(false);
+                dispatch(addSubstituteEmployee(res))
             }
         }
 
@@ -84,7 +91,11 @@ const AddSubstituteEmployee = ({ editData, setEditData, setOpen }) => {
 
     useEffect(() => {
         if (editData) {
-            reset(editData);
+            reset({
+                ...editData,
+                date_of_birth: moment(editData.date_of_birth).format('YYYY-MM-DD'),
+                date_of_appointment: moment(editData.date_of_appointment).format('YYYY-MM-DD')
+            });
         }
     }, [editData]);
 

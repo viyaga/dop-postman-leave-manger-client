@@ -86,7 +86,7 @@ const regularEmployeeColumns = [
 ];
 
 const substituteEmployeeColums = [
-  { field: "id", headerName: "S.No.", width: 90, filterable: false },
+  { field: "sNo", headerName: "S.No.", width: 90, filterable: false },
   { field: "name", type: "string", headerName: "Name", width: 250, valueFormatter: (params) => textCapitalize(params) },
   { field: "designation", type: "string", headerName: "Designation", width: 180, valueFormatter: (params) => params.toUpperCase(), headerAlign: "left", align: "left" },
   { field: "branch_office", type: "string", headerName: "Branch Office", width: 200, valueFormatter: (params) => params ? textCapitalize(params) : "-" },
@@ -98,7 +98,7 @@ const substituteEmployeeColums = [
 ];
 
 const leaveDataColums = [
-  { field: "id", headerName: "SL .No", width: 70, filterable: false },
+  { field: "sNo", headerName: "SL .No", width: 70, filterable: false },
   { field: "name", type: "string", headerName: "Name", width: 200, valueFormatter: (params) => textCapitalize(params) },
   {
     field: "designation", type: "string", headerName: "Designation", width: 120,
@@ -120,7 +120,7 @@ const leaveDataColums = [
 ]
 
 const approvedLeaveDataColums = [
-  { field: "id", headerName: "SL .No", width: 70, filterable: false },
+  { field: "sNo", headerName: "SL .No", width: 70, filterable: false },
   { field: "name", type: "string", headerName: "Name", width: 200, valueFormatter: (params) => textCapitalize(params) },
   {
     field: "designation", type: "string", headerName: "Designation", width: 120,
@@ -143,7 +143,7 @@ const approvedLeaveDataColums = [
 ]
 
 const stopGapArrangementColums = [
-  { field: "id", headerName: "SL .No", width: 70, filterable: false },
+  { field: "sNo", headerName: "SL .No", width: 70, filterable: false },
   {
     field: "designation", type: "string", headerName: "Name Of The Vacant Post", width: 180,
     valueFormatter: (params) => {
@@ -164,7 +164,7 @@ const stopGapArrangementColums = [
 ]
 
 const HolidayColums = [
-  { field: "id", headerName: "S.No.", width: 90, filterable: false },
+  { field: "sNo", headerName: "S.No.", width: 90, filterable: false },
   { field: "holiday", type: "string", headerName: "Holiday", width: 200, valueFormatter: (params) => textCapitalize(params) },
   { field: "date", type: "string", headerName: "Date", width: 150, valueFormatter: (params) => moment(params).format('DD/MM/YYYY') },
 ];

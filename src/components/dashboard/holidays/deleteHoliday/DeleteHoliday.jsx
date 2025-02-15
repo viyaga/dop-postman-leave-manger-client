@@ -21,6 +21,7 @@ const DeleteHoliday = ({ deleteData, setDeleteData }) => {
 
             toast.success("Deleted Successfully")
             setDeleteData(null)
+            return dispatch(deleteHoliday(deleteData))
         })
     }
 

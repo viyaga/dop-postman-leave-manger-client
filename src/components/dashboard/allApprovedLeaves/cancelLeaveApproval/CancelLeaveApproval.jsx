@@ -12,7 +12,7 @@ const CancelLeaveApproval = ({ cancelationData, setCancelationData }) => {
     const handleCancellation = () => {
 
         startTransiton(async () => {
-            const res = await cancelLeaveApproval(cancelationData._id)
+            const res = await cancelLeaveApproval(cancelationData.id)
 
             if (res.error) {
                 return toast.error(res.error)

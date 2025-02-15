@@ -12,7 +12,7 @@ const DeleteLeaveData = ({ deleteData, setDeleteData }) => {
     const handleDelete = () => {
 
         startTransiton(async () => {
-            const res = await deletePendingLeaveData(deleteData._id)
+            const res = await deletePendingLeaveData(deleteData.id)
 
             if (res.error) {
                 return toast.error(res.error)

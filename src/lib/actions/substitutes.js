@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import { errResponse } from "../utils";
 
@@ -45,7 +44,6 @@ export const updateSubstitute = async (id, data) => {
       data,
     });
 
-    revalidateTag("substitutes");
     return updatedSubstitute;
   } catch (error) {
     return { error: errResponse(error) };
@@ -56,8 +54,7 @@ export const updateSubstitute = async (id, data) => {
 export const deleteSubstitute = async (id) => {
   try {
     await prisma.substitute.delete({ where: { id } });
-    revalidateTag("substitutes");
-    return { success: true };
+    return id;
   } catch (error) {
     return { error: errResponse(error) };
   }
